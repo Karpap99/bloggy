@@ -36,11 +36,13 @@ export const AuthForm = () => {
         }
         else if (AuthType === "register") {
             if(!repeatPassword) {
-                alert("Please confirm your password");
+                alert("Please repeat your password");
                 return;
             }
-            addUser({ email, password, repeatPassword }).then(() => {
-                alert("Registered successfully");
+            addUser({ email, password, repeatPassword }).then((user) => {
+                dispatch(userSliceActions.setUser(user));
+                dispatch(userSliceActions.setAuthed(true));
+                router.push("/");   
             }).catch((err) => {
                 alert("Error: " + err.message);
             });

@@ -16,7 +16,7 @@ export const addUser = async (user: UserRegister) => {
 
     const { email, password } = parsed.data;
     
-    return addDoc(collection(db, "users"), {
+    addDoc(collection(db, "users"), {
         ...{
             email: email,
             password: password,
@@ -24,6 +24,10 @@ export const addUser = async (user: UserRegister) => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
+
+    const userSnap = await getDocs(query(collection(db, "users"), where("email", "==", email)));
+
+    return userSnap.docs.map(doc => ({ id: doc.id, ...doc.data(), } as User))[0];
 }
 
 
