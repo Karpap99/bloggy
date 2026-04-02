@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCw45bf9pWy2jRsIq2hOIlgSqcdi-rhfUI",
-  authDomain: "test-blog-c9553.firebaseapp.com",
-  projectId: "test-blog-c9553",
-  storageBucket: "test-blog-c9553.appspot.com",
-  messagingSenderId: "425141022826",
-  appId: "1:425141022826:web:65b6ccf031298e15909a13"
+  apiKey: process.env.NEXT_PUBLIC_apiKey,
+  authDomain: process.env.NEXT_PUBLIC_authDomain,
+  projectId: process.env.NEXT_PUBLIC_projectId,
+  storageBucket: process.env.NEXT_PUBLIC_storageBucket,
+  messagingSenderId: process.env.NEXT_PUBLIC_messagingSenderId,
+  appId: process.env.NEXT_PUBLIC_appId,
 };
 
 

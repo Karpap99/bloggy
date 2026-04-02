@@ -1,36 +1,183 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blog Application (Next.js + Firestore)
+
+## Overview
+
+This project is a single-page blog application built with **Next.js**, **TypeScript**, and **Firebase Firestore**.
+It allows users to browse, create, edit, and view blog posts.
+
+---
+
+## Tech Stack
+
+* **Frontend:** Next.js (App Router), React, TypeScript
+* **State Management:** Redux Toolkit
+* **Database:** Firebase Firestore
+* **Validation:** Zod
+* **Styling:** Tailwind CSS
+
+---
+
+## Features
+
+### Core Features
+
+* View list of publications
+* View detailed post page
+* Create new post
+* Edit existing post (only by author)
+* Basic authentication (email/password stored in Firestore)
+
+### Optional Features (implemented if applicable)
+
+* Post sorting
+* Comments system
+* Delete posts
+
+---
+
+## Routes
+
+| Route          | Description                      |
+| -------------- | -------------------------------- |
+| `/`            | Home page (list of publications) |
+| `/auth`        | Authentication page              |
+| `/post/[id]`   | Single post page                 |
+| `/post/create` | Create new post                  |
+
+---
+
+## Project Structure
+
+```
+/app        - Next.js App Router pages
+/lib        - Redux store, hooks, slices
+/src
+  /components - UI components
+  /hooks - firestore hooks
+  /services   - Firestore interaction logic
+  /types      - TypeScript types
+```
+
+---
+
+## Data Model
+
+### User
+
+```
+{
+  id: string;
+  email: string;
+  password: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+```
+
+### Post
+
+```
+{
+  id: string;
+  title: string;
+  content: string;
+  author: {
+    id: string;
+    email: string;
+  };
+  messagesAmount: number;
+  views: number;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+```
+
+### Message
+
+```
+{
+  id: string;
+  content: string;
+  author: {
+    id: string;
+    email: string;
+  };
+  postId: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Create `.env`:
+
+```
+NEXT_PUBLIC_apiKey=...
+NEXT_PUBLIC_authDomain=...
+NEXT_PUBLIC_projectId=...
+NEXT_PUBLIC_storageBucket=...
+NEXT_PUBLIC_messagingSenderId=...
+NEXT_PUBLIC_appId=...
+```
+
+---
+
+### 3. Run the project
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Firestore Notes
 
-## Learn More
+* Data is stored in collections:
 
-To learn more about Next.js, take a look at the following resources:
+  * `users`
+  * `posts`
+  * `messages`
+* Relations are implemented manually via `author` with fields `email` and `id`
+* No joins — additional queries are used to resolve related data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## State Management
 
-## Deploy on Vercel
+Redux Toolkit is used for:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* User authentication state
+* Global user data
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Validation
+
+Zod schemas are used for:
+
+* Login/Registration form validation
+* Post creation/edit validation
+* Message creation validation
+
+---
+
+## Notes
+
+* Firestore does not support relational queries — relations are resolved manually
+* Authentication is simplified (not using Firebase Auth)
+* Designed as a test assignment, not production-ready system
+
+---
